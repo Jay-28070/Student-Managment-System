@@ -18,52 +18,20 @@ public class StudentManagementSystem {
         System.out.print("\n---Add Students---\n");
 
         // Name field
-        String name = "";
-        while (true) {
-            System.out.print("Enter student's name: ");
-            name = scanner.nextLine();
-            if (name.isBlank()) {
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "You cannot leave field empty!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                break;
-            }
-        }
+        String name = Functions.checkEmptyString("Enter student's name: ");
 
         // Surname field
-        String surname = "";
-        while (true) {
-            System.out.print("Enter " + name + "'s surname: ");
-            surname = scanner.nextLine();
-            if (surname.isBlank()) {
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "You cannot leave field empty!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                break;
-            }
-        }
+        String surname = Functions.checkEmptyString("Enter " + name + "'s surname: ");
 
         // Age field
         int age_int = 0;
-        while (true) {
-            System.out.print("Enter " + name + "'s age: ");
-            String age_str = scanner.nextLine();
-            if (age_str.isBlank()) {
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "You cannot leave field empty!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                try {
-                    age_int = Integer.parseInt(age_str);
-                    break;
-                } catch (NumberFormatException e) {
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null, "Enter a valid number!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
+        String age = Functions.checkEmptyString("Enter " + name + "'s age: ");
+        try {
+            age_int = Integer.parseInt(age);
+        } catch (NumberFormatException e) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "Enter a valid number!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         // Generate unique ID
