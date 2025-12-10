@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 public class StudentManagementSystem {
 
     public static void main(String[] args) {
+        @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
         mainMenu(scanner);
     }
@@ -26,6 +27,7 @@ public class StudentManagementSystem {
         // Age field
         int age_int = 0;
         String age = Functions.checkEmptyString("Enter " + name + "'s age: ");
+        // Convert age to int for try and catch
         try {
             age_int = Integer.parseInt(age);
         } catch (NumberFormatException e) {
@@ -140,6 +142,74 @@ public class StudentManagementSystem {
     }
 
     // =====================================================================
+    // Update Students method
+    // =====================================================================
+    public static void updateStudents(Scanner scanner) {
+        System.out.print("\n---Update Student---");
+
+        System.out.print("\n");
+
+        if (ArrayStudents.students.isEmpty()) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null,
+                    "System has no students to update!\nEnsure students are added to update", "Hint",
+                    JOptionPane.PLAIN_MESSAGE);
+            mainMenu(scanner);
+        }
+
+        // Print list of students
+        for (Student s : ArrayStudents.students) {
+            System.out.print(s.getName() + " " + s.getSurname() + "\nID: " + s.getId() + "\nAge: " + s.getAge());
+            System.out.println("\n");
+        }
+
+        String input = Functions.checkEmptyString("Enter name/surname/ID to select student you wish to update: ");
+        // Check if updateName == name/Id/Surname to update.
+
+        Student target = null;
+
+        // Find student
+        for (Student s : ArrayStudents.students) {
+            if (s.getName().equalsIgnoreCase(input) || s.getSurname().equalsIgnoreCase(input)
+                    || s.getId().equalsIgnoreCase(input)) {
+                target = s;
+                break;
+            }
+        }
+
+        // Check if target could not be found
+        if (target == null) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "Student could not be found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Update fields
+        System.out.println("\nUpdating: " + target.getName() + " " + target.getSurname());
+
+        String newName = Functions.allowBlank(scanner, "Enter new name (leave blank to keep same): ");
+        if (!newName.isBlank())
+            target.setName(newName);
+
+        String newSurname = Functions.allowBlank(scanner, "Enter new surname (leave blank to keep same): ");
+        if (!newSurname.isBlank())
+            target.setSurname(newSurname);
+
+        String newAgeStr = Functions.allowBlank(scanner, "Enter new age (leave blank to keep same): ");
+        if (!newAgeStr.isBlank()) {
+            try {
+                target.setAge(Integer.parseInt(newAgeStr));
+            } catch (NumberFormatException e) {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "Invalid number!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        System.out.println("\nStudent updated successfully!");
+
+        mainMenu(scanner);
+    }
+
+    // =====================================================================
     // Main menu method
     // =====================================================================
     public static void mainMenu(Scanner scanner) {
@@ -147,7 +217,7 @@ public class StudentManagementSystem {
             System.out.print(
                     "\nWelcome\n---------------------------------------------------------------------------------------------------");
             System.out
-                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Exit\n");
+                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Update students\n6. Exit\n");
 
             System.out.print("\nEnter choice: ");
             String userChoice_str = scanner.nextLine();
@@ -172,6 +242,8 @@ public class StudentManagementSystem {
                     } else if (userChoice_int == 4) {
                         searchStudentInfo(scanner);
                     } else if (userChoice_int == 5) {
+                        updateStudents(scanner);
+                    } else if (userChoice_int == 6) {
                         System.exit(0);
                     }
                     break;
