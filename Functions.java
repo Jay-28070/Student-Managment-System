@@ -21,4 +21,11 @@ public class Functions {
             }
         }
     }
+
+    // Allow Blank spaces
+    public static String allowBlank(Scanner scanner, String message) {
+        System.out.print(message);
+        return scanner.nextLine();
+    }
+
 }
