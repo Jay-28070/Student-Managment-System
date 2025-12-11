@@ -26,29 +26,70 @@ public class StudentManagementSystem {
 
         // Age field
         int age_int = 0;
-        String age = Functions.checkEmptyString("Enter " + name + "'s age: ");
-        // Convert age to int for try and catch
-        try {
-            age_int = Integer.parseInt(age);
-        } catch (NumberFormatException e) {
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Enter a valid number!", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+        while (true) {
+            String age = Functions.checkEmptyString("Enter " + name + "'s age: ");
+            try {
+                age_int = Integer.parseInt(age);
+                break;
+            } catch (NumberFormatException e) {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(null, "Enter a valid number!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
 
-        // Generate unique ID
+        // Grade field
+        int studentGrade_int = 0;
+
+        while (true) {
+            String studentGrade = Functions.checkEmptyString("What grade is " + name + " in: ");
+
+            try {
+                studentGrade_int = Integer.parseInt(studentGrade);
+
+                // Check valid range
+                if (studentGrade_int < 1 || studentGrade_int > 12) {
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Grade must be between 1 and 12!",
+                            "Invalid Grade",
+                            JOptionPane.ERROR_MESSAGE);
+                    continue;
+
+                } else if (age_int - studentGrade_int >= 9) {
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, name + " cannot be in grade " + studentGrade + "!",
+                            "Error\nStudents cannot be kept in same grade for longer than 3 years.",
+                            JOptionPane.ERROR_MESSAGE);
+                    continue;
+
+                } else if (age_int - studentGrade_int <= 4) {
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, name + " is too young to be in grade " + studentGrade + "!",
+                            "Error\nStudents cannot be kept in same grade for longer than 3 years.",
+                            JOptionPane.ERROR_MESSAGE);
+                    continue;
+                }
+                // Break out of loop and continue from line 88
+                break;
+
+            } catch (NumberFormatException e) {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Enter a valid numeric grade between 1 and 12!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        // Generate 5-digit ID
         Random random = new Random();
-        int id = 0;
-        for (int i = 0; i < 5; i++) {
-            int randomNr = random.nextInt(10);
-            id = id * 10 + randomNr;
-        }
+        int id = random.nextInt(90000) + 10000;
 
-        // Parse id to string
-        String id_str = Integer.toString(id);
-
-        // Create student object
-        Student newStudent = new Student(name, surname, age_int, id_str);
+        // Create student
+        Student newStudent = new Student(name, surname, age_int, String.valueOf(id), String.valueOf(studentGrade_int));
         ArrayStudents.students.add(newStudent);
 
         System.out.println("\nStudent added successfully!\n");
@@ -130,7 +171,8 @@ public class StudentManagementSystem {
                 if (student.getName().equalsIgnoreCase(input) || student.getSurname().equalsIgnoreCase(input)
                         || student.getId().equalsIgnoreCase(input)) {
                     System.out.println(
-                            "Found: " + student.getName() + " " + student.getSurname() + " | ID: " + student.getId());
+                            "Found: " + student.getName() + " " + student.getSurname() + "\nID: " + student.getId()
+                                    + "\nAge: " + student.getAge() + "\nGrade " + student.getGrade());
                     found = true;
                 }
             }
@@ -159,7 +201,8 @@ public class StudentManagementSystem {
 
         // Print list of students
         for (Student s : ArrayStudents.students) {
-            System.out.print(s.getName() + " " + s.getSurname() + "\nID: " + s.getId() + "\nAge: " + s.getAge());
+            System.out.print(s.getName() + " " + s.getSurname() + "\nID: " + s.getId() + "\nAge: " + s.getAge()
+                    + "\nGrade " + s.getGrade());
             System.out.println("\n");
         }
 
@@ -194,6 +237,11 @@ public class StudentManagementSystem {
         if (!newSurname.isBlank())
             target.setSurname(newSurname);
 
+        String newGrade = Functions.checkEmptyString("Enter new grade (Leave blank to keep the same: ");
+        if (!newGrade.isBlank()) {
+            target.setGrade(newGrade);
+        }
+
         String newAgeStr = Functions.allowBlank(scanner, "Enter new age (leave blank to keep same): ");
         if (!newAgeStr.isBlank()) {
             try {
@@ -217,7 +265,7 @@ public class StudentManagementSystem {
             System.out.print(
                     "\nWelcome\n---------------------------------------------------------------------------------------------------");
             System.out
-                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Update students\n6. Exit\n");
+                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Update students\n6. Manage students\n7. Exit\n");
 
             System.out.print("\nEnter choice: ");
             String userChoice_str = scanner.nextLine();
@@ -229,21 +277,29 @@ public class StudentManagementSystem {
             } else {
                 try {
                     int userChoice_int = Integer.parseInt(userChoice_str);
-                    if (userChoice_int > 5 || userChoice_int <= 0) {
+                    if (userChoice_int > 6 || userChoice_int <= 0) {
                         Toolkit.getDefaultToolkit().beep();
                         JOptionPane.showMessageDialog(null, "Enter a valid number!", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     } else if (userChoice_int == 1) {
                         addStudents(scanner);
+
                     } else if (userChoice_int == 2) {
                         viewStudents(scanner);
+
                     } else if (userChoice_int == 3) {
                         removeStudents(scanner);
+
                     } else if (userChoice_int == 4) {
                         searchStudentInfo(scanner);
+
                     } else if (userChoice_int == 5) {
                         updateStudents(scanner);
+
                     } else if (userChoice_int == 6) {
+                        MenuHub.mainMenu(scanner);
+
+                    } else if (userChoice_int == 7) {
                         System.exit(0);
                     }
                     break;

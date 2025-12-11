@@ -6,12 +6,14 @@ public class Student {
     private String surname;
     private int age;
     private String id;
+    private String grade;
 
-    public Student(String name, String surname, int age, String id) {
+    public Student(String name, String surname, int age, String id, String grade) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.id = id;
+        this.grade = grade;
     }
 
     //Getters
@@ -31,6 +33,10 @@ public class Student {
         return id;
     }
 
+    public String getGrade() {
+        return grade;
+    }
+
     //Setters
     public void setName(String name) {
         this.name = name;
@@ -46,6 +52,10 @@ public class Student {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     //String
