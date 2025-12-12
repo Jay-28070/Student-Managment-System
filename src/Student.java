@@ -1,5 +1,4 @@
 package src;
-//Need to have getters and setters because I'm planning on adding an update feature, so data will change.
 
 public class Student {
 
@@ -37,6 +36,7 @@ public class Student {
     public String getGrade() {
         return grade;
     }
+
 
     //Setters
     public void setName(String name) {
