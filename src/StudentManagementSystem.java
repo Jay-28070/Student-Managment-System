@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.Random;
@@ -265,7 +267,7 @@ public class StudentManagementSystem {
             System.out.print(
                     "\nWelcome\n---------------------------------------------------------------------------------------------------");
             System.out
-                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Update students\n6. Manage students\n7. Exit\n");
+                    .print("\n1. Add students\n2. View all students\n3. Remove student\n4. Search student\n5. Update students\n6. Exit\n");
 
             System.out.print("\nEnter choice: ");
             String userChoice_str = scanner.nextLine();
@@ -297,9 +299,6 @@ public class StudentManagementSystem {
                         updateStudents(scanner);
 
                     } else if (userChoice_int == 6) {
-                        MenuHub.mainMenu(scanner);
-
-                    } else if (userChoice_int == 7) {
                         System.exit(0);
                     }
                     break;
