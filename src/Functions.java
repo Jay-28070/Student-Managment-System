@@ -1,3 +1,4 @@
+package src;
 import java.util.Scanner;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;

@@ -1,3 +1,4 @@
+package src;
 import java.awt.Toolkit;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -13,7 +14,7 @@ public class MenuHub {
 
 
         int userChoice_int = 0;
-        String userChoice = Functions.checkEmptyString("Enter choice: ");
+        //String userChoice = Functions.checkEmptyString("Enter choice: ");
         // COnvert to int for checks
         //Fix bug where it prints "Please enter choice" before exception check
         while (true) {

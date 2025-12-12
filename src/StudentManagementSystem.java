@@ -1,3 +1,4 @@
+package src;
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.Random;
